@@ -122,8 +122,17 @@ CREATE TABLE kunde_bruker_map (
 INSERT INTO kunde_bruker_map VALUES ('kunde_1', 1);
 
 CREATE VIEW utleie_kunde_view AS
-SELECT u.*
+SELECT
+sykkel.sykkel_modell,
+startstasjon.stasjon_navn AS startstasjon,
+sluttstasjon.stasjon_navn AS sluttstasjon,
+u.utleie_tid,
+u.innlevert_tid,
+u.leiebeløp
 FROM utleie u
+JOIN sykkel ON u.sykkel_id = sykkel.sykkel_id
+JOIN sykkelstasjon startstasjon ON u.startstasjon_id = startstasjon.stasjon_id
+JOIN sykkelstasjon sluttstasjon ON u.sluttstasjon_id = sluttstasjon.stasjon_id
 JOIN kunde_bruker_map m ON u.kunde_id = m.kunde_id
 WHERE m.brukernavn = CURRENT_USER;
 
